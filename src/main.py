@@ -1,20 +1,54 @@
-from src.power import power_function
-from src.constants import SAMPLE_CONSTANT
+"""
+Функция запуска терминала.
+"""
+
+import shlex
+import typer
+
+from . import factorial, fibo
+from .state import AppState
+from .stack import Stack
 
 
-def main() -> None:
-    """
-    Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
-    :return: Данная функция ничего не возвращает
-    """
+class InteractiveShell:
+    def __init__(self):
+        self.app = typer.Typer(no_args_is_help=True, add_completion=False)
 
-    target, degree = map(int, input("Введите два числа разделенные пробелом: ").split(" "))
+        @self.app.callback()
+        def init(ctx: typer.Context):
+            if ctx.obj is None:
+                ctx.obj = self.state
 
-    result = power_function(target=target, power=degree)
+        self.app.command()(factorial.factorial)
+        self.app.command()(fibo.fibo)
 
-    print(result)
+        self.state = AppState(current_stack=Stack())
 
-    print(SAMPLE_CONSTANT)
+    def run(self):
+        typer.echo("Введите --help для показа команд.")
+        typer.echo("Введите 'exit' для выхода.\n")
+
+        while True:
+            try:
+                user_input = typer.prompt("Введите команду")
+
+                if not user_input.strip():
+                    continue
+
+                if user_input.strip() == "exit":
+                    break
+                args = shlex.split(user_input)
+                self.app(args, standalone_mode=False, obj=self.state)
+
+            except Exception as e:
+                typer.echo(f"Error: {e}")
+
+
+def main():
+
+    shell = InteractiveShell()
+    shell.run()
+
 
 if __name__ == "__main__":
     main()
