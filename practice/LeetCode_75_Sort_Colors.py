@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
         for i in range(len(nums)):
@@ -5,4 +8,3 @@ class Solution:
                 if nums[j] >= nums[i]:
                     continue
                 nums[i], nums[j] = nums[j], nums[i]
-        

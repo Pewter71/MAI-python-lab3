@@ -5,9 +5,8 @@
 import shlex
 import typer
 
-from . import factorial, fibo
+from . import factorial, fibo, sorts, stack_commands
 from .state import AppState
-from .stack import Stack
 
 
 class InteractiveShell:
@@ -21,8 +20,20 @@ class InteractiveShell:
 
         self.app.command()(factorial.factorial)
         self.app.command()(fibo.fibo)
-
-        self.state = AppState(current_stack=Stack())
+        self.app.command()(sorts.sort)
+        self.app.command()(stack_commands.stack_checkout)
+        self.app.command()(stack_commands.stack_push)
+        self.app.command()(stack_commands.stack_pop)
+        self.app.command()(stack_commands.stack_new)
+        self.app.command()(stack_commands.stack_list)
+        self.app.command()(stack_commands.stack_remove)
+        self.app.command()(stack_commands.stack_min)
+        self.app.command()(stack_commands.stack_size)
+        self.app.command()(stack_commands.stack_show)
+        self.app.command()(stack_commands.stack_clear)
+        self.app.command()(stack_commands.stack_current)
+        self.state = AppState(
+            stack_list=[], current_stack=-1, stack_list_size=0,)
 
     def run(self):
         typer.echo("Введите --help для показа команд.")

@@ -1,6 +1,6 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
-        fibo_list = [0, 1,  2 ]
+        fibo_list = [0, 1,  2]
         if n < 0:
             return -1
         elif n < 3:

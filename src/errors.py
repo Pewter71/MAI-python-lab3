@@ -1,3 +1,4 @@
+"""Пользовательские ошибки"""
 
 
 class InvalidStackOperation(Exception):

@@ -6,6 +6,7 @@ import typer
 
 
 def fibo_not_recursive(n: int) -> int:
+    """Нерекурсивная реализация"""
     fibo_list = [0, 1, 1]
     if n < 0:
         return -1
@@ -18,6 +19,7 @@ def fibo_not_recursive(n: int) -> int:
 
 
 def fibo_recursive(n: int) -> int:
+    """Рекурсивная реализация"""
     fibo_list = [0, 1, 1]
     if n < 0:
         return -1

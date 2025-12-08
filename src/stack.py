@@ -1,8 +1,7 @@
 """
-Класс стэка для работы с обратной польской нотацией.
-Поддерживает классические функции push, pop, is_empty, size,
-а также дополнительную функцию double_pop для удобного извлечения
-двух последних элементов.
+Класс стека.
+Поддерживает функции push, pop, is_empty, peek,
+clear, min
 """
 
 from .errors import InvalidStackOperation
@@ -42,3 +41,6 @@ class Stack:
     def clear(self) -> None:
         self._data = []
         self._min_data = []
+
+    def print(self) -> None:
+        print(self._data)

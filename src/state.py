@@ -8,4 +8,6 @@ from .stack import Stack
 
 @dataclass
 class AppState:
-    current_stack: Stack
+    stack_list: list[Stack]
+    current_stack: int
+    stack_list_size: int

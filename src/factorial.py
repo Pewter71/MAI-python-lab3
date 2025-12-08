@@ -1,11 +1,12 @@
 """
-Функция вычисления факториала числа.
+Функции вычисления факториала числа.
 Принимает неотрицательное число.
 """
 import typer
 
 
 def factorial_not_recursive(n: int) -> int:
+    """Нерекурсивная реализация"""
     factorial_list = [1, 1, 2]
     if n < 0:
         return -1
@@ -18,6 +19,7 @@ def factorial_not_recursive(n: int) -> int:
 
 
 def factorial_recursive(n: int) -> int:
+    """Рекурсивная реализация"""
     factorial_list = [1, 1, 2]
     if n < 0:
         return -1
