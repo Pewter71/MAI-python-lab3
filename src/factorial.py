@@ -1,6 +1,6 @@
 """
-Функции вычисления факториала числа.
-Принимает неотрицательное число.
+Функции вычисления факториала числа
+Принимает неотрицательное число
 """
 import typer
 
@@ -29,7 +29,7 @@ def factorial_recursive(n: int) -> int:
         return factorial_recursive(n-1) * n
 
 
-def factorial(n: int, r_flag:
+def factorial(n: int = typer.Argument(..., help="Число для вычисления факториала"), r_flag:
               bool = typer.Option(
         False,
         "-r",
@@ -40,7 +40,11 @@ def factorial(n: int, r_flag:
         print(f"{n}: Факториала числа, меньшего нуля, не существует")
     else:
         if r_flag:
-            result = factorial_recursive(n)
+            try:
+                result = factorial_recursive(n)
+            except RecursionError:
+                print("Достигнут максимальный предел рекурсии")
+                result = -1
         else:
             result = factorial_not_recursive(n)
         print(result)

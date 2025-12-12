@@ -1,11 +1,11 @@
 """
-Функция запуска терминала.
+Функция запуска терминала
 """
 
 import shlex
 import typer
 
-from . import factorial, fibo, sorts, stack_commands
+from . import factorial, fibo, sorts, stack_commands, generate_tests, benchmark
 from .state import AppState
 
 
@@ -18,9 +18,14 @@ class InteractiveShell:
             if ctx.obj is None:
                 ctx.obj = self.state
 
-        self.app.command()(factorial.factorial)
-        self.app.command()(fibo.fibo)
-        self.app.command()(sorts.sort)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            factorial.factorial)
+        self.app.command(context_settings={
+                         "ignore_unknown_options": True})(fibo.fibo)
+        self.app.command(context_settings={
+                         "ignore_unknown_options": True})(sorts.sort)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            benchmark.benchmark)
         self.app.command()(stack_commands.stack_checkout)
         self.app.command()(stack_commands.stack_push)
         self.app.command()(stack_commands.stack_pop)
@@ -32,8 +37,20 @@ class InteractiveShell:
         self.app.command()(stack_commands.stack_show)
         self.app.command()(stack_commands.stack_clear)
         self.app.command()(stack_commands.stack_current)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_integers)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_show)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_floats)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_reverse)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_duplicates)
+        self.app.command(context_settings={"ignore_unknown_options": True})(
+            generate_tests.generate_nearly)
         self.state = AppState(
-            stack_list=[], current_stack=-1, stack_list_size=0,)
+            stack_list=[], current_stack=-1, stack_list_size=0, generated_list=[])
 
     def run(self):
         typer.echo("Введите --help для показа команд.")

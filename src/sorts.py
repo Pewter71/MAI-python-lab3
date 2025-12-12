@@ -1,5 +1,5 @@
 """
-Алгоритмы сортировок.
+Алгоритмы сортировок
 """
 from enum import Enum
 import typer
@@ -32,7 +32,9 @@ def bubble_sort(a: list[int]) -> list[int]:
 def counting_sort(a: list[int]) -> list[int]:
     """Реализация сортировки подсчетом"""
     count_dict = dict()
-    sorted_list = []
+    sorted_list: list[int] = []
+    if len(a) == 0:
+        return sorted_list
     min_element = a[0]
     max_element = a[0]
     for i in a:
@@ -62,6 +64,8 @@ def quick_sort(a: list[T]) -> list[T]:
 def radix_sort(a: list[int], base: int = 10) -> list[int]:
     """Реализация поразрядной сортировки"""
     sorted_list = a.copy()
+    if len(sorted_list) == 0:
+        return sorted_list
     max_digits = max([len(str(x)) for x in sorted_list])
     base = 10
     bins: list[list[int]] = [[] for _ in range(base)]
@@ -88,8 +92,8 @@ def bucket_sort(a: list[float],
     for num in sorted_list:
         bi = int(n * num)
         buckets[bi].append(num)
-    for bucket in buckets:
-        bucket = quick_sort(bucket)
+    for i in range(len(buckets)):
+        buckets[i] = quick_sort(buckets[i])
     index = 0
     for bucket in buckets:
         for num in bucket:
@@ -123,39 +127,51 @@ def heap_sort(a: list[int]) -> list[int]:
     return sorted_list
 
 
-def sort(
-    sort_type: SortAlgorithm = typer.Argument(..., help="Алгоритм сортировки"),
-    input: str = typer.Argument(...,
-                                help="Список чисел в формате строки, например '[5,1,3]'")
-):
+def sort(ctx: typer.Context,
+         sort_type: SortAlgorithm = typer.Argument(
+             ..., help="Алгоритм сортировки"),
+         input: str = typer.Argument(...,
+                                     help="Список чисел в формате строки, например [5,1,3]")
+         ):
     """
     Сортирует переданный список выбранным алгоритмом.
     """
-    clean_str = input.replace("[", "").replace("]", "").strip()
     input_list = []
-    if clean_str:
-        try:
-            input_list = [float(item.strip()) for item in clean_str.split(",")]
-        except ValueError:
-            print(
-                "Не удалось преобразовать данные в числа")
-        result: list[int] | list[float] = []
+    if input == "gen":
+        input_list = ctx.obj.generated_list
+    else:
+        clean_str = input.replace("[", "").replace("]", "").strip()
+        if clean_str:
+            try:
+                input_list = [float(item.strip())
+                              for item in clean_str.split(",")]
+            except ValueError:
+                print(
+                    "Не удалось преобразовать данные в числа")
+    result: list[int] | list[float] = []
 
-        if sort_type == SortAlgorithm.bubble:
-            data_int = [int(x) for x in input_list]
-            result = bubble_sort(data_int)
-        elif sort_type == SortAlgorithm.counting:
-            data_int = [int(x) for x in input_list]
-            result = counting_sort(data_int)
-        elif sort_type == SortAlgorithm.quick:
-            data_int = [int(x) for x in input_list]
-            result = quick_sort(data_int)
-        elif sort_type == SortAlgorithm.radix:
-            data_int = [int(x) for x in input_list]
-            result = radix_sort(data_int)
-        elif sort_type == SortAlgorithm.bucket:
+    if sort_type == SortAlgorithm.bubble:
+        data_int = [int(x) for x in input_list]
+        result = bubble_sort(data_int)
+    elif sort_type == SortAlgorithm.counting:
+        data_int = [int(x) for x in input_list]
+        result = counting_sort(data_int)
+    elif sort_type == SortAlgorithm.quick:
+        data_int = [int(x) for x in input_list]
+        result = quick_sort(data_int)
+    elif sort_type == SortAlgorithm.radix:
+        data_int = [int(x) for x in input_list]
+        result = radix_sort(data_int)
+    elif sort_type == SortAlgorithm.bucket:
+        if isinstance(input_list[0], int):
+            print("Для этой сортировки не могут использоваться целые числа")
+            return
+        if max(input_list) >= 1 or min(input_list) < 0:
+            print("Для этой сортировки могут использоваться числа <1 и >=0")
+            return
+        else:
             result = bucket_sort(input_list)
-        elif sort_type == SortAlgorithm.heap:
-            data_int = [int(x) for x in input_list]
-            result = heap_sort(data_int)
-        print(result)
+    elif sort_type == SortAlgorithm.heap:
+        data_int = [int(x) for x in input_list]
+        result = heap_sort(data_int)
+    print(result)

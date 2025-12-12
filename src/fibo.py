@@ -1,6 +1,6 @@
 """
-Функция вычисления числа Фибоначчи.
-Принимает неотрицательное число.
+Функция вычисления числа Фибоначчи
+Принимает неотрицательное число
 """
 import typer
 
@@ -40,7 +40,11 @@ def fibo(n: int, r_flag:
         print(f"{n}: Числа Фибоначчи, меньшего нуля, не существует")
     else:
         if r_flag:
-            result = fibo_recursive(n)
+            try:
+                result = fibo_recursive(n)
+            except RecursionError:
+                print("Достигнут максимальный предел рекурсии")
+                result = -1
         else:
             result = fibo_not_recursive(n)
         print(result)

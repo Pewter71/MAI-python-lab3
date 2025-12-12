@@ -1,5 +1,5 @@
 """
-Класс стека.
+Класс стека
 Поддерживает функции push, pop, is_empty, peek,
 clear, min
 """
@@ -36,6 +36,9 @@ class Stack:
         return self._data[-1]
 
     def min(self) -> int:
+        if not self._min_data:
+            raise InvalidStackOperation(
+                "Извлечение элемента из пустого стека.")
         return self._min_data[-1]
 
     def clear(self) -> None:
